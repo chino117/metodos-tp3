@@ -8,8 +8,9 @@ void svd(Matriz<double>& A, Matriz<double>& U, Matriz<double>& sigma, Matriz<dou
 	Matriz<double> AtA = (A.traspuesta())*A;
 	cout << "post AtA" << " size: " << AtA.filas() << " X " << AtA.columnas() << endl;
 	Matriz<double> autoval (A.columnas(), 1, 0.0);
-	Matriz<double> V = (obtener_autovectores(AtA, autoval, 5000, 0.000000001)).traspuesta();
-
+	Matriz<double> V = (obtener_autovectores(AtA, autoval, 5000, 0.000000001));
+	Vt = V.traspuesta();
+	
 	for (int i = 0; i < A.columnas(); ++i)
 	{
 		Matriz<double> Ui =(A*V.copy_col(i))*autoval.copy_col(i);

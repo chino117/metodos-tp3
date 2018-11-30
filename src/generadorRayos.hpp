@@ -51,12 +51,12 @@ tuple<int, int> randPos(int lado, int filas, int columnas)
 }
 
 
-tuple< double, Matriz<double> > simularRayo(Matriz<double>& imagen, int n, int m, int fe, int ce, int fs, int cs)
+tuple< double, Matriz<double> > simularRayo(Matriz<double>& imagen, int m, int n, int fe, int ce, int fs, int cs)
 {
-    // [t, D] = simularRayo(I, n, m, f_ini, c_ini, f_fin, c_fin, [dibujar])
+    // [t, D] = simularRayo(I, m, n, f_ini, c_ini, f_fin, c_fin, [dibujar])
     //
     // Simula un rayo del tomografo a traves de la imagen I, discretizada en
-    // n filas y m columnas. El rayo tiene como punto inicial el punto
+    // m filas y n columnas. El rayo tiene como punto inicial el punto
     // (f_ini, c_ini) y como punto final el punto (f_ini, c_ini).
     // Retorna: el tiempo total t de la emision del rayo y las distancias
     // recorridas D(i,j) en cada punto de la discretizacion.
@@ -65,10 +65,10 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double>& imagen, int n, int m
 
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
-	int df = filas/n;
-	int dc = columnas/m;
+	int df = filas/m;
+	int dc = columnas/n;
 	double t = 0;
-	Matriz<double> D(n,m,0);
+	Matriz<double> D(m,n,0);
 	
 	//Calculo la recta que representa el rayo (y su inversa)
 
@@ -91,9 +91,9 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double>& imagen, int n, int m
 		for(int j = j_min; j <= j_max; j++)
 		{
 			t += imagen[i][j] + 1;
-			int n_i = std::min(n-1, (int) std::trunc((double)i/df));
-			int m_j = std::min(m-1, (int) std::trunc((double)j/dc));
-			D[n_i][m_j] = D[n_i][m_j] + 1; 
+			int m_i = std::min(m-1, (int) std::trunc((double)i/df));
+			int n_j = std::min(n-1, (int) std::trunc((double)j/dc));
+			D[m_i][n_j] = D[m_i][n_j] + 1; 
 		}
 	}
 	
@@ -105,9 +105,9 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 	srand(time(NULL));
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
-	Matriz<double> rayos(k, n*m,0);
+	Matriz<double> rayos(k, m*n,0);
 	Matriz<double> tiempos(k, 1);
-	int p = std::trunc(k/20); //estaba puesto m/20, lo cambie por k/20 como en el taller
+	//int p = std::trunc(k/20); //estaba puesto m/20, lo cambie por k/20 como en el taller
 	for(int i = 0; i < k; i++)
 	{
 		//sale y entra resultan siempre distintos
@@ -122,7 +122,7 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 		int fs = std::get<0>(posSalida);
 		int cs = std::get<1>(posSalida);
 
-		auto res = simularRayo(imagen, n, m, fe, ce, fs, cs);
+		auto res = simularRayo(imagen, m, n, fe, ce, fs, cs);
 		double t = std::get<0>(res);
 		Matriz<double> simRayo = std::get<1>(res);
 	    
