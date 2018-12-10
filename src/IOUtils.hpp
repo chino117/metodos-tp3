@@ -27,14 +27,14 @@ public:
 	IOUtils(int argc, char** argv);
 	~IOUtils();
 	Matriz<double> leer_imagen();
-	void escribir_imagen(Matriz<double> imagen);
+	void escribir_imagen(Matriz<double>& imagen);
 	
 	//info_archivo info;
 	std::string inPath;
 	std::string outPath;
 	int cantidadRayos;
-	int discretizadoFilas = 50;
-	int discretizadoColumnas = 50;
+	int discretizadoFilas = 10;
+	int discretizadoColumnas = 10;
 };
 
 //IOUtils::IOUtils(){
@@ -51,8 +51,11 @@ IOUtils::IOUtils(int argc, char** argv){
         std::cout<<"Parametros de entrada insuficientes"<<'\n';
     }
 	cantidadRayos = std::atoi(argv[1]);
-	inPath = argv[2];
-	outPath = argv[3];
+	int discretizado = std::atoi(argv[2]);
+	discretizadoFilas = discretizado;
+	discretizadoColumnas = discretizado;
+	inPath = argv[3];
+	outPath = argv[4];
 }   
 
 Matriz<double> IOUtils::leer_imagen()
@@ -89,7 +92,7 @@ Matriz<double> IOUtils::leer_imagen()
 }
 
 
-void IOUtils::escribir_imagen(Matriz<double> imagen)
+void IOUtils::escribir_imagen(Matriz<double>& imagen)
 {
 	char comments[10];
 	sprintf(comments, "%s", "TP3");
@@ -99,8 +102,9 @@ void IOUtils::escribir_imagen(Matriz<double> imagen)
 	for(int i = 0; i < fil; i++)
 	{
 		for(int j = 0; j < col; j++)
-		{
-			data[(i*col)+j] = uchar(imagen[i][j]);
+		{	uchar lol = uchar(imagen[(i*col)+j][0]);
+			cout << "|" << lol << "|" << endl;
+			data[(i*col)+j] = lol;
 		}
 	}
 	bool ret = SavePPMFile(outPath.c_str(),data,col,fil,PPM_LOADER_PIXEL_TYPE_GRAY_16B, comments);

@@ -42,17 +42,10 @@ Matriz<double> obtener_autovectores(const Matriz<double>& datos, Matriz<double>&
     while(i < datos.filas())
     {   cout << "autovec: " << i << endl;
         autoval[i][0] = met_potencia(b, x, niter, temp, epsilon);
-        if(comp_doubles_epsilon(autoval[i][0], autoval[i][0],EPSILON))
-        {
-            b -= autoval[i][0]*(temp*temp.traspuesta());
-            res.set_col(i, temp/norma_2_vec(temp));
-            i++;
-        }
-        else
-        {
-            x = gen_matriz_random(datos.filas(),1);
-            x = x/norma_2_vec(x);
-        }
+        b -= autoval[i][0]*(temp*temp.traspuesta());
+        res.set_col(i, temp);
+        //res.set_col(i, temp/norma_2_vec(temp));
+        i++;
     }
     return res; 
 }
