@@ -63,7 +63,7 @@ Matriz<double> IOUtils::leer_imagen()
 	//Por ahora asumo imagen ppm en formato raw con profundidad
 	//de color de 8 bits.
     uchar* imagen;
-	int alto = 0 ; int ancho = 0;
+	int alto; int ancho;
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
     bool ret = LoadPPMFile(&imagen, &ancho, &alto, &pt, inPath.c_str());
 
@@ -74,8 +74,6 @@ Matriz<double> IOUtils::leer_imagen()
   }
     //Pixeles en RGB de una imagen en escala de grises, 
 	// R = G = B = intensidad de gris
-
-  //cout << alto << " " << ancho << endl;
 	
     Matriz<double> temp(alto, ancho);
 
@@ -83,7 +81,7 @@ Matriz<double> IOUtils::leer_imagen()
     {
 		for(int j = 0; j < ancho; j++)
 		{
-        	temp[i][j] = double(imagen[i*ancho+j]);
+        	temp[i][j] = double(imagen[(i*ancho)+j]);
 		}
     }
 
@@ -102,9 +100,12 @@ void IOUtils::escribir_imagen(Matriz<double>& imagen)
 	for(int i = 0; i < fil; i++)
 	{
 		for(int j = 0; j < col; j++)
-		{	uchar lol = uchar(imagen[(i*col)+j][0]);
-			cout << "|" << lol << "|" << endl;
-			data[(i*col)+j] = lol;
+		{	double xij = imagen[(i*col)+j][0];
+			xij = std::max(0,std::min(255,(int)xij));
+			//uchar lol = uchar((int)imagen[(i*col)+j][0]);
+
+			cout << "|" << xij << "|" << endl;
+			data[(i*col)+j] = (uchar)xij;
 		}
 	}
 	bool ret = SavePPMFile(outPath.c_str(),data,col,fil,PPM_LOADER_PIXEL_TYPE_GRAY_16B, comments);

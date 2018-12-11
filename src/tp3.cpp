@@ -23,13 +23,13 @@ int main(int argc, char* argv[]){
 
     //cout << imagen << endl;
 
-
+    //hasta aca seguro anda.
 	//Paso 2: Simular el proceso tomografico
 	auto tiemposRayos = generarRayos(imagen, io.discretizadoFilas, io.discretizadoColumnas, io.cantidadRayos); 
 
 	Matriz<double> tiempos = std::get<0>(tiemposRayos);
 	Matriz<double> D = std::get<1>(tiemposRayos);
-  //cout << "D :" << D << endl;
+    //cout << "D :" << D << endl;
 	//Paso 3: Ruido aleatorio
 	
 	//Matriz<double> tiempoConRuido = generarRuido(tiempos);
@@ -41,6 +41,7 @@ int main(int argc, char* argv[]){
 	//cout << "D :" << D<< endl;
 
 	Matriz<double> reconstruccion = resolverEN(D, tiempos);//TODO volver a tiemposConRuido
+    //Matriz<double> reconstruccion = resolverEN(D, tiempoConRuido);
 	
 	cout << "Reconstruccion: \n" << reconstruccion<< endl;
     cout << "reconstruccion" << endl;
@@ -50,8 +51,7 @@ int main(int argc, char* argv[]){
     cout << "escribio_imagen" << endl;
 
 
-/*
-	Matriz<double> A(3,2,0);
+    /*Matriz<double> A(3,2,0);
     Matriz<double> b(3,1,0);
      
     Matriz<double> temp1(2, 1, 0);
@@ -82,7 +82,55 @@ int main(int argc, char* argv[]){
 
     cout << "res:       " << endl;
     cout << "|" << res[0][0] << "|" << endl;
+    cout << "|" << res[1][0] << "|" << endl;*/
+    
+// res = (10/7 3/7) esperado
+
+
+
+/*
+	Matriz<double> A(5,3,0);
+    Matriz<double> b(5,1,0);
+     
+    Matriz<double> temp1(3, 1, 0);
+    Matriz<double> temp2(3, 1, 0);
+    Matriz<double> temp3(3, 1, 0); 
+     
+    temp1[0][0] = 1;
+    temp1[1][0] = 0;
+    temp1[2][0] = 3;
+    temp2[0][0] = 1;
+    temp2[1][0] = 0;
+    temp2[2][0] = 2;
+    temp3[0][0] = 1;
+    temp3[1][0] = 0;
+    temp3[2][0] = 1;
+
+    A.set_fil(0,temp1);
+    A.set_fil(1,temp2);
+    A.set_fil(2,temp3);
+    A.set_fil(3,temp1);
+    A.set_fil(4,temp2);
+    b[0][0]=1;
+    b[1][0]=43;
+    b[2][0]=22;
+    b[3][0]=1;
+	b[4][0]=4;
+
+	cout << "|" << A[0][0] << " " << A[0][1]<< " " << A[0][2] << " |"<< b[0][0]<< "|" << endl;
+    cout << "|" << A[1][0] << " " << A[1][1] << " "<< A[1][2] << " |" << b[1][0]<< "|" << endl;
+    cout << "|" << A[2][0] << " " << A[2][1] << " "<< A[2][2] << " |" << b[2][0]<< "|" << endl;
+    cout << "|" << A[3][0] << " " << A[3][1] << " "<< A[3][2] << " |" << b[3][0]<< "|" << endl;
+    cout << "|" << A[4][0] << " " << A[4][1] << " "<< A[4][2] << " |" << b[4][0]<< "|" << endl;
+
+    Matriz<double> res = resolver_gauss(A,b);
+
+    cout << "res:       " << endl;
+    cout << "|" << res[0][0] << "|" << endl;
     cout << "|" << res[1][0] << "|" << endl;
+    cout << "|" << res[2][0] << "|" << endl;
+    cout << "|" << res[3][0] << "|" << endl;
+    cout << "|" << res[4][0] << "|" << endl;
 */
 
 return 0;	

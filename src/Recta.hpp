@@ -4,28 +4,22 @@
 class Recta
 {
 	public:
-		Recta(int x1, int y1, int x2, int y2);
-		int evaluar(int x);
+		Recta(double x1, double y1, double x2, double y2);
+		double evaluar(double x);
 	private:
-		int coeficiente;
-		int independiente;
+		double coeficiente;
+		double independiente;
 };
 
-Recta::Recta(int x1, int y1, int x2, int y2)
+Recta::Recta(double x1, double y1, double x2, double y2)
 {
-	if(x1 == x2)
-	{//hack
-		coeficiente = 1;
-		independiente = 0;
-	}
-	else
-	{
-		coeficiente = (y1 - y2)/(x1 - x2);
-		independiente = y1 - (coeficiente*x1);
-	}
+
+	coeficiente = (y1 - y2)/(x1 - x2);
+	independiente = y1 - (coeficiente*x1);
+	
 }
 
-int Recta::evaluar(int x)
+double Recta::evaluar(double x)
 {
 	return (coeficiente*x)+independiente;
 }

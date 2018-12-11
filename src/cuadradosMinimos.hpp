@@ -20,7 +20,7 @@ void svd(Matriz<double>& A, Matriz<double>& U, Matriz<double>& sigma, Matriz<dou
 	//cout << AtA << endl;
 	cout << "post AtA" << " size: " << AtA.filas() << " X " << AtA.columnas() << endl;
 	Matriz<double> autoval (A.columnas(), 1, 0.0);
-	Matriz<double> V = (obtener_autovectores(AtA, autoval, 100000, 0.000000001));
+	Matriz<double> V = (obtener_autovectores(AtA, autoval, 10000, 0.000000001));
 
 	/*for (int i = 0; i < A.columnas(); ++i)
 	{

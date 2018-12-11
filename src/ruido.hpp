@@ -11,7 +11,7 @@ Matriz<double> generarRuido(Matriz<double>& limpio)
 			ruido = 255;
 		}
 */
-		conRuido[0][i] = ruido;
+		conRuido[i][0] = ruido;
 
 	}
 	return conRuido;
