@@ -8,17 +8,17 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 	Matriz<double> tiempos(k, 1);
 
 	double dif = 360/k;
-	int entra = 0;
-	int sale = 2;
+	int sale = 0;
+	int entra = 2;
 	int lado = 0;
-	double fs = 0;
 	double cs = 0;
-	double fe = filas-1;
+	double fs = filas-1;
 	double ce = columnas-1;
+	double fe = 0;
 	double t;
 	bool cambio = false;
 	//comienza del lado izquierdo hacia el derecho
-	for(int i = 0; i < k; i++)
+	for(int i = 0; i < k; i++) //faltaria alguna variable que me cuente la cantidad de rayos por lado que voy tirando!!
 	{		//sale y entra resultan siempre distintos
 		auto res = simularRayo(imagen, n, m, fe, ce, fs, cs);
 		t = std::get<0>(res);
@@ -27,30 +27,72 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 		rayos.set_fil(i,simRayo);
 		tiempos[i][0] = t;
 		if(lado == 0){
-			if((fs + dif) < filas-1 %% (fe - dif) > 0 ){
+			if((fe + dif) < filas-1 && (fs - dif) > -1 ){
+				fs = fs - dif;
+				fe = fe + dif;
+			}else{
+				cambio = true;
+			}
+		}
+		if(lado == 1){
+			if((cs + dif) < columnas-1 && (ce - dif) > -1 ){
+				cs = cs + dif;
+				ce = ce - dif;
+			}else{
+				cambio = true;
+			}
+		}
+		if(lado == 2){
+			if((fs + dif) < filas-1 && (fe - dif) > -1 ){
+				fe = fe - dif;
 				fs = fs + dif;
-				fe = fe - dif;				
+			}else{
+				cambio = true;
+			}
+		}
+		if(lado == 3){
+			if((ce + dif) < columnas-1 && (cs - dif) > -1 ){
+				ce = ce + dif;
+				cs = cs - dif;
 			}else{
 				cambio = true;
 			}
 		}
 		//demas casos 1,2,3
 		if(cambio){
-			if(lado == 0){
+			if(lado == 0){ //seria el mismo caso para el ultimo del lado 0, es omite?
 				fs = 0;
 				cs = 0;
 				fe = filas-1;
 				ce = columnas-1;
+				sale = 1;
+				entra = 3;
 			}
 			if(lado == 1){
-
+				fs = 0;
+				cs = columnas-1;
+				fe = filas-1;
+				ce = 0;
+				sale = 1;
+				entra = 3;
 			}
 			if(lado == 2){
-				
+				fs = 0;
+				cs = 0;
+				fe = filas-1;
+				ce = columnas-1;
+				sale = 2;
+				entra = 0;				
 			}
 			if(lado == 3){
-				
+				fs = filas-1;
+				cs = columnas-1;
+				fe = 0;
+				ce = 0;
+				sale = 3;
+				entra = 1;
 			}
+			lado = sale;
 		}
 	}
 	return make_tuple(tiempos, rayos);
