@@ -6,8 +6,6 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 	int columnas = imagen.columnas();
 
 	int cantXlados = k\4;
-	int sobran = k % 4;
-
 	Matriz<double> rayos(cantXlados*4, n*m,0);
 	Matriz<double> tiempos(k, 1);
 
@@ -64,20 +62,20 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double>& imagen, int
 			rayos.set_fil(rayo,simRayo);
 			tiempos[rayo][0] = t;
 			if(lado == 0){
-				fs = fs - dif;
-				fe = fe + dif;
+				fs = fs - difFils;
+				fe = fe + difFils;
 			}
 			if(lado == 1){
-				cs = cs + dif;
-				ce = ce - dif;
+				cs = cs + difCols;
+				ce = ce - difCols;
 			}
 			if(lado == 2){
-				fe = fe - dif;
-				fs = fs + dif;
+				fe = fe - difFils;
+				fs = fs + difFils;
 			}
 			if(lado == 3){
-				ce = ce + dif;
-				cs = cs - dif;
+				ce = ce + difCols;
+				cs = cs - difCols;
 			}
 		}
 	}
