@@ -33,6 +33,8 @@ public:
 	std::string inPath;
 	std::string outPath;
 	int cantidadRayos;
+	int metodo = 0;
+	int ruido = 0;
 	int discretizadoFilas = 10;
 	int discretizadoColumnas = 10;
 };
@@ -52,10 +54,12 @@ IOUtils::IOUtils(int argc, char** argv){
     }
 	cantidadRayos = std::atoi(argv[1]);
 	int discretizado = std::atoi(argv[2]);
+	metodo = std::atoi(argv[3]);
+	ruido = std::atoi(argv[4]);
 	discretizadoFilas = discretizado;
 	discretizadoColumnas = discretizado;
-	inPath = argv[3];
-	outPath = argv[4];
+	inPath = argv[5];
+	outPath = argv[6];
 }   
 
 Matriz<double> IOUtils::leer_imagen()
@@ -97,16 +101,21 @@ void IOUtils::escribir_imagen(Matriz<double>& imagen)
 	int col = discretizadoColumnas;
 	int fil = discretizadoFilas;
 	uchar* data = new uchar[fil*col];
-	for(int i = 0; i < fil; i++)
-	{
-		for(int j = 0; j < col; j++)
+	for(int i = 0; i < fil*col; i++)
+	{ 
+		double xij = imagen[i][0];
+		xij = std::max(0,std::min(255,(int)xij));
+		cout << "|" << xij << "|" << endl;
+		data[i] = (uchar)xij;
+
+		/*for(int j = 0; j < col; j++)
 		{	double xij = imagen[(i*col)+j][0];
 			xij = std::max(0,std::min(255,(int)xij));
 			//uchar lol = uchar((int)imagen[(i*col)+j][0]);
 
 			cout << "|" << xij << "|" << endl;
 			data[(i*col)+j] = (uchar)xij;
-		}
+		}*/
 	}
 	bool ret = SavePPMFile(outPath.c_str(),data,col,fil,PPM_LOADER_PIXEL_TYPE_GRAY_16B, comments);
 	if (!ret)

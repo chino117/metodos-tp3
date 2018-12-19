@@ -25,8 +25,8 @@ int main(int argc, char* argv[]){
 
     //hasta aca seguro anda.
 	//Paso 2: Simular el proceso tomografico
-	auto tiemposRayos = generarRayos(imagen, io.discretizadoFilas, io.discretizadoColumnas, io.cantidadRayos); 
-
+  
+    auto tiemposRayos = generarRayos(imagen, io.discretizadoFilas, io.discretizadoColumnas, io.cantidadRayos, io.metodo); 
 	Matriz<double> tiempos = std::get<0>(tiemposRayos);
 	Matriz<double> D = std::get<1>(tiemposRayos);
     //cout << "D :" << D << endl;
